@@ -16,6 +16,9 @@
  * The function should sort the list by rearranging pointers,
  * not by creating new nodes or swapping data values.
  */
+
+ /*Har ændret så retur typen er en pointer til en node,
+ kan ikke se hvordan man skal løse opgaven ved kun at flytte pointers*/
 node* isort(node* list) {
     /* TODO: Implement insertion sort for linked list */
     if(list == NULL) return;

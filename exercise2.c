@@ -16,8 +16,33 @@
  * The function should sort the list by rearranging pointers,
  * not by creating new nodes or swapping data values.
  */
-void isort(node* list) {
+node* isort(node* list) {
     /* TODO: Implement insertion sort for linked list */
+    if(list == NULL) return;
+
+    node* sorted = NULL;
+    node* current = list;
+
+    while(current != NULL){
+        node* next = current->next;
+ 
+        if(sorted == NULL || current->data < sorted->data){
+            current->next = sorted;
+            sorted = current;
+        }
+        else{
+            node* search = sorted;
+            while (search->next != NULL && search->next->data <= current->data){
+                search = search->next;
+        }
+            current->next = search->next;
+            search->next = current;
+        }
+
+        current = next;
+    }
+    /*ville tænke at jeg skulle returnere sorted*/
+    return sorted;
 }
 
 /* Helper function to print the list */

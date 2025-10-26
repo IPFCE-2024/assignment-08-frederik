@@ -7,7 +7,7 @@
  * This demonstrates the concept of information hiding.
  */
 
-#include "exercise4.h"
+#include "./include/exercise4.h"
 
 /* 
  * Stack operations from Assignment 7
@@ -63,16 +63,16 @@ bool full(stack *s) {
  * Post-condition: both stacks in the queue are empty
  */
 void init_queue(queue *q) {
-    /* TODO: initialize queue */
+    initialize(&q->s1);
+    initialize(&q->s2);
 }
-
 /* 
  * Insert item x at the back of queue q
  * q: pointer to the queue structure
  * x: item to be inserted
  */
 void enqueue(queue *q, int x) {
-    /* TODO: Implement enqueue using ONLY stack operations */
+    push(&q->s1, x);
 }
 
 /* 
@@ -80,26 +80,33 @@ void enqueue(queue *q, int x) {
  * q: pointer to the queue structure
  */
 int dequeue(queue *q) {
-    /* TODO: Implement dequeue using ONLY stack operations */
-    
-    return 0;  // TODO: Replace with actual implementation
-}
+    if (empty(&q->s2)) {
+        while (!empty(&q->s1)) {
+            int temp = pop(&q->s1);
+            push(&q->s2, temp);
+        }
+    }
 
+    if (empty(&q->s2)) {
+        fprintf(stderr, "Error: dequeue from empty queue\n");
+        exit(EXIT_FAILURE);
+    }
+
+    return pop(&q->s2);
+}
 /* 
  * Check if the queue is empty
  * q: pointer to the queue structure
  * Returns: true if both stacks are empty, false otherwise
  */
 bool queue_empty(queue *q) {
-    /* TODO: Implement using ONLY stack operations */
-    return false;  // TODO: Replace with actual implementation
+    return empty(&q->s1) && empty(&q->s2);
 }
 
 /* 
 * Check if the queue is full
 */
 bool queue_full(queue *q) {
-    /* TODO: Implement using ONLY stack operations */
     return false;
 }
 

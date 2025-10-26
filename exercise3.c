@@ -14,8 +14,12 @@
  * 
  * Post-condition: queue is empty with front and rear set to NULL
  */
+
+
 void initialize(queue *q) {
-    /* TODO: Initialize the queue */
+    q->front = NULL;
+    q->rear = NULL;
+    q->count = 0;
 }
 
 /* 
@@ -27,8 +31,29 @@ void initialize(queue *q) {
  * Post-condition: x is added to the rear of the queue
  */
 void enqueue(queue *q, int x) {
-    /* TODO: Implement enqueue */
+    if (full(q)) {
+        printf("Queue overflow\n");
+        return;
+    }
+
+    node *n = malloc(sizeof(node));
+    if (!n) {
+        printf("Memory allocation failed\n");
+        return;
+    }
+    n->data = x;
+    n->next = NULL;
+
+    if (q->rear == NULL) {  
+        q->front = q->rear = n;
+    } else {
+        q->rear->next = n;
+        q->rear = n;
+    }
+
+    q->count++;
 }
+
 
 /* 
  * Return (and remove) the front item from queue q
@@ -38,18 +63,29 @@ void enqueue(queue *q, int x) {
  * Post-condition: front item is removed and returned
  */
 int dequeue(queue *q) {
-    /* TODO: Implement dequeue */
-    return 0;  
-}
+    if (empty(q))
+        return 0; // handle underflow
+    
+    int value = q->front->data;
+    node* temp = q->front;
 
+    q->front = q->front->next;
+
+    if (q->front == NULL)  
+        q->rear = NULL;
+
+    free(temp);
+    q->count--;
+
+    return value;  
+}
 /* 
  * Check if the queue is empty
  * q: pointer to the queue structure
  * Returns: true if queue is empty, false otherwise
  */
 bool empty(const queue *q) {
-    /* TODO: Implement empty check */
-    return false; 
+    return (q->front == NULL) && (q->rear == NULL); 
 }
 
 /* 
@@ -58,8 +94,11 @@ bool empty(const queue *q) {
  * Returns: true if queue is full, false otherwise
  */
 bool full(const queue *q) {
-    /* TODO: Implement full check */
-    return false;
+    node* temp = malloc(sizeof(node));
+    if (temp == NULL)
+        return true;   // allocation failed -> queue is full
+    free(temp);
+    return false;      // allocation succeeded -> queue not full
 }
 
 /* Helper function to print the queue */

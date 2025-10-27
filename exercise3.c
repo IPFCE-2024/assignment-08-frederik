@@ -6,6 +6,9 @@
  * The queue should maintain FIFO (First-In, First-Out) order.
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
 #include "exercise3.h"
 
 /* 
@@ -16,6 +19,9 @@
  */
 void initialize(queue *q) {
     /* TODO: Initialize the queue */
+    q->front = NULL;
+    q->rear = NULL;
+    q->count = 0;
 }
 
 /* 
@@ -28,6 +34,20 @@ void initialize(queue *q) {
  */
 void enqueue(queue *q, int x) {
     /* TODO: Implement enqueue */
+    node *new_node = malloc(sizeof(node));
+    assert(new_node != NULL);
+    
+    new_node->data = x;
+    new_node->next = NULL;
+
+    if (q->rear == NULL) {
+        q->front = new_node;
+        q->rear = new_node;
+    } else {
+        q->rear->next = new_node;
+        q->rear = new_node;
+    }
+    q->count++;
 }
 
 /* 
@@ -39,7 +59,19 @@ void enqueue(queue *q, int x) {
  */
 int dequeue(queue *q) {
     /* TODO: Implement dequeue */
-    return 0;  
+    assert(q->front != NULL);
+    
+    node *temp = q->front;
+    int x = temp->data;
+    
+    q->front = q->front->next;
+    if (q->front == NULL) {
+        q->rear = NULL;
+    }
+
+    free(temp);
+    q->count--;
+    return x;
 }
 
 /* 
@@ -49,7 +81,7 @@ int dequeue(queue *q) {
  */
 bool empty(const queue *q) {
     /* TODO: Implement empty check */
-    return false; 
+    return q->front == NULL;
 }
 
 /* 
